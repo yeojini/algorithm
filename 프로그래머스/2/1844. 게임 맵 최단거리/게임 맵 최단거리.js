@@ -11,26 +11,26 @@ function solution(maps) {
     
     const queue = [[0,0,1]];
     visited[0][0] = true;
+    
+    const directions = [
+        [-1,0],
+        [0,-1],
+        [1,0],
+        [0,1]
+    ];
+    
     while(queue.length) {
         const [row,col,distance] = queue.shift();
         if(row === n-1 && col === m-1){
             return distance;
         }
-        if(isSafe(row+1,col)) {
-            visited[row+1][col] = true;
-            queue.push([row+1,col,distance+1]);
-        };
-        if(isSafe(row-1,col)) {
-            visited[row-1][col] = true;
-            queue.push([row-1,col,distance+1]);
-        }
-        if(isSafe(row,col+1)) {
-            visited[row][col+1] = true;
-            queue.push([row,col+1,distance+1]);
-        }
-        if(isSafe(row,col-1)) {
-            visited[row][col-1] = true;
-            queue.push([row,col-1,distance+1]);
+        for (let [dx,dy] of directions) {
+            const newRow = row + dx;
+            const newCol = col + dy;
+            if(isSafe(newRow,newCol)) {
+                visited[newRow][newCol] = true;
+                queue.push([newRow, newCol,distance+1]);
+            }
         }
     }
     return answer;

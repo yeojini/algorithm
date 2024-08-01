@@ -15,8 +15,6 @@ function solution(tickets) {
         routes[from].sort();
     }
     
-    
-    const stack = [];
     const answer = [];
     
     function dfs(current) {

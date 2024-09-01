@@ -1,63 +1,51 @@
-// 문제
-// 정수를 저장하는 큐를 구현한 다음, 입력으로 주어지는 명령을 처리하는 프로그램 작성
-// push X: 정수 X를 큐에 넣는 연산이다.
-// pop: 큐에서 가장 앞에 있는 정수를 빼고, 그 수를 출력한다. 만약 큐에 들어있는 정수가 없는 경우에는 -1을 출력한다.
-// size: 큐에 들어있는 정수의 개수를 출력한다.
-// empty: 큐가 비어있으면 1, 아니면 0을 출력한다.
-// front: 큐의 가장 앞에 있는 정수를 출력한다. 만약 큐에 들어있는 정수가 없는 경우에는 -1을 출력한다.
-// back: 큐의 가장 뒤에 있는 정수를 출력한다. 만약 큐에 들어있는 정수가 없는 경우에는 -1을 출력한다.
-
-// 중요 개념
-// 큐 구현
-
-
 const fs = require('fs');
 const path = process.platform === 'linux' ? '/dev/stdin' : './input.txt';
 const input = fs.readFileSync(path).toString().trim().split('\n');
 const T = input[0];
 
-class Node {
-    constructor(value) {
-        this.value = value;
-        this.next = null;
-    }
-}
-
 class Queue {
-    head = null;
-    tail = null;
-    length = 0;
+  constructor() {
+    this.items = {};
+    this.headIndex = 0;
+    this.tailIndex = 0;
+  }
 
-    push = (value) => {
-        const node = new Node(value);
-        if(this.length++ === 0) {
-            this.head = node;
-            this.tail = node;
-        } else {
-            this.tail.next = node;
-            this.tail = node;
-        }
+  push(item) {
+    this.items[this.tailIndex] = item;
+    this.tailIndex++;
+  }
+
+  pop() {
+    if (this.empty()) {
+      return -1;
     }
+    const item = this.items[this.headIndex];
+    delete this.items[this.headIndex];
+    this.headIndex++;
+    return item;
+  }
 
-    pop = () => {
-        if(this.length === 0) {
-            return -1;
-        }
-        const pop = this.head;
-        this.head = pop.next;
-        if(--this.length === 0) {
-            this.tail = null;
-        }
-        return pop.value;
+  size() {
+    return this.tailIndex - this.headIndex;
+  }
+
+  empty() {
+    return this.size() === 0 ? 1 : 0;
+  }
+
+  front() {
+    if (this.empty()) {
+      return -1;
     }
+    return this.items[this.headIndex];
+  }
 
-    size = () => this.length;
-
-    empty = () => this.length === 0 ? 1 : 0;
-
-    front = () => this.length === 0 ? -1 : this.head.value;
-
-    back = () => this.length === 0 ? -1 : this.tail.value;
+  back() {
+    if (this.empty()) {
+      return -1;
+    }
+    return this.items[this.tailIndex - 1];
+  }
 }
 
 const queue = new Queue();

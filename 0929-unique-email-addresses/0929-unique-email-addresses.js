@@ -1,16 +1,16 @@
-/**
- * @param {string[]} emails
- * @return {number}
- */
 var numUniqueEmails = function(emails) {
-    const map = new Map();
-    for(let i=0; i<emails.length; i++) {
-        const email = emails[i];
+    // Set을 사용하면 중복 제거 목적에 더 적합합니다
+    const uniqueEmails = new Set();
+    
+    for(const email of emails) {
         const [localName, domainName] = email.split('@');
-        let newLocalName = localName.replace(/\./g,'').replace(/\++[a-z]*/g,'');
-        const key = `${newLocalName}@${domainName}`;
-        map.set(key,  (map.get(key) || 0 ) + 1);
+        
+        const cleanLocalName = localName.split('+')[0].replace(/\./g, '');
+        
+        const normalizedEmail = `${cleanLocalName}@${domainName}`;
+        
+        uniqueEmails.add(normalizedEmail);
     }
-    console.log(map);
-    return map.size;
+    
+    return uniqueEmails.size;
 };

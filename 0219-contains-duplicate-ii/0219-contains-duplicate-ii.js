@@ -5,14 +5,13 @@
  * @return {boolean}
  */
 var containsNearbyDuplicate = function(nums, k) {
-    // key: 숫자. value: 숫자가 등장한 최근 index
-    const map = new Map();
-    for(let i=0; i<nums.length; i++) {
+    const map = {};
+    for(let i=0; i < nums.length; i++ ) {
         const num = nums[i];
-        if(i - map.get(num) <= k) {
+        if(map[num] !== undefined && i - map[num] <= k) {
             return true;
         }
-        map.set(num, i);
+        map[num] = i;
     }
     return false;
 };

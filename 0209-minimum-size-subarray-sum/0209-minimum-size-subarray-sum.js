@@ -6,7 +6,7 @@
 var minSubArrayLen = function(target, nums) {
     let left = 0;
     let sum = 0;
-    let minLength = 100001;
+    let minLength = Infinity;
     for(let right = 0; right < nums.length ; right++) {
         sum += nums[right];
         while(sum >= target) {
@@ -15,5 +15,5 @@ var minSubArrayLen = function(target, nums) {
             left++;
         }
     }
-    return left !== 0 ? minLength : 0;
+    return minLength === Infinity ? 0 : minLength;
 };
